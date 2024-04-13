@@ -9,15 +9,15 @@ import 'package:platform_device_id/platform_device_id.dart';
 
 class Utils {
 
-  static Future<void> showLocalNotification(String title, String body) async {
-    var android = const AndroidNotificationDetails("channelId", "channelName",
-        channelDescription: "channelDescription");
-    var iOS = const DarwinNotificationDetails();
-    var platform = NotificationDetails(android: android, iOS: iOS);
-
-    int id = Random().nextInt((pow(2, 31) - 1).toInt());
-    await FlutterLocalNotificationsPlugin().show(id, title, body, platform);
-  }
+  // static Future<void> showLocalNotification(String title, String body) async {
+  //   var android = const AndroidNotificationDetails("channelId", "channelName",
+  //       channelDescription: "channelDescription");
+  //   var iOS = const DarwinNotificationDetails();
+  //   var platform = NotificationDetails(android: android, iOS: iOS);
+  //
+  //   int id = Random().nextInt((pow(2, 31) - 1).toInt());
+  //   await FlutterLocalNotificationsPlugin().show(id, title, body, platform);
+  // }
 
   static void fireToast(String msg) {
     Fluttertoast.showToast(
@@ -30,34 +30,34 @@ class Utils {
         fontSize: 16.0);
   }
 
-  static Future<Map<String, String>> deviceParams() async {
-    Map<String, String> params = {};
-    var getDeviceId = await PlatformDeviceId.getDeviceId;
-    String fcmToken = await Prefs.loadFCM();
-
-    if (Platform.isIOS) {
-      params.addAll({
-        'device_id': getDeviceId!,
-        'device_type': "I",
-        'device_token': fcmToken,
-      });
-    } else {
-      params.addAll({
-        'device_id': getDeviceId!,
-        'device_type': "A",
-        'device_token': fcmToken,
-      });
-    }
-    return params;
-  }
-
-  static String currentDate() {
-    DateTime now = DateTime.now();
-
-    String convertedDateTime =
-        "${now.year.toString()}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')} ${now.hour.toString()}:${now.minute.toString()}";
-    return convertedDateTime;
-  }
+  // static Future<Map<String, String>> deviceParams() async {
+  //   Map<String, String> params = {};
+  //   var getDeviceId = await PlatformDeviceId.getDeviceId;
+  //   String fcmToken = await Prefs.loadFCM();
+  //
+  //   if (Platform.isIOS) {
+  //     params.addAll({
+  //       'device_id': getDeviceId!,
+  //       'device_type': "I",
+  //       'device_token': fcmToken,
+  //     });
+  //   } else {
+  //     params.addAll({
+  //       'device_id': getDeviceId!,
+  //       'device_type': "A",
+  //       'device_token': fcmToken,
+  //     });
+  //   }
+  //   return params;
+  // }
+  //
+  // static String currentDate() {
+  //   DateTime now = DateTime.now();
+  //
+  //   String convertedDateTime =
+  //       "${now.year.toString()}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')} ${now.hour.toString()}:${now.minute.toString()}";
+  //   return convertedDateTime;
+  // }
 
   static Future<bool> dialogCommon(
       BuildContext context, String title, String message, bool isSingle) async {
@@ -85,5 +85,12 @@ class Utils {
             ],
           );
         });
+  }
+  static String currentDate() {
+    DateTime now = DateTime.now();
+
+    String convertedDateTime =
+        "${now.year.toString()}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')} ${now.hour.toString()}:${now.minute.toString()}";
+    return convertedDateTime;
   }
 }

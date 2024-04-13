@@ -35,12 +35,12 @@ class _HomePageState extends State<HomePage> {
           MyFeedPage(
             pageController: _pageController,
           ),
-          MySearchPage(),
+          const MySearchPage(),
           MyUploadPage(
             pageController: _pageController,
           ),
-          MyLikesPage(),
-          MyProfilePage(),
+          const MyLikesPage(),
+          const MyProfilePage(),
         ],
         onPageChanged: (int index) {
           setState(() {
@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
             _currentTap = index;
             _pageController!.animateToPage(
               index,
-              duration: Duration(milliseconds: 200),
+              duration: const Duration(milliseconds: 200),
               curve: Curves.easeIn,
             );
           });

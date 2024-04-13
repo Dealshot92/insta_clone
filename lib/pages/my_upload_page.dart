@@ -9,7 +9,7 @@ import '../services/file_service.dart';
 class MyUploadPage extends StatefulWidget {
   final PageController? pageController;
 
-  const MyUploadPage({Key? key, this.pageController}) : super(key: key);
+  const MyUploadPage({super.key, this.pageController});
 
   @override
   State<MyUploadPage> createState() => _MyUploadPageState();
@@ -28,28 +28,28 @@ class _MyUploadPageState extends State<MyUploadPage> {
     _apiPostImage();
   }
 
-  void _apiPostImage(){
+  void _apiPostImage() {
     setState(() {
       isLoading = true;
     });
     FileService.uploadPostImage(_image!).then((downloadUrl) => {
-      _resPostImage(downloadUrl),
-    });
+          _resPostImage(downloadUrl),
+        });
   }
 
-  void _resPostImage(String downloadUrl){
+  void _resPostImage(String downloadUrl) {
     String caption = captionController.text.toString().trim();
     Post post = Post(caption, downloadUrl);
     _apiStorePost(post);
   }
 
-  void _apiStorePost(Post post)async{
+  void _apiStorePost(Post post) async {
     // Post to posts
     Post posted = await DBService.storePost(post);
     // Post to feeds
     DBService.storeFeed(posted).then((value) => {
-      _moveToFeed(),
-    });
+          _moveToFeed(),
+        });
   }
 
   _moveToFeed() {
@@ -58,13 +58,13 @@ class _MyUploadPageState extends State<MyUploadPage> {
     });
     captionController.text = "";
     _image = null;
-    widget.pageController!.animateToPage(
-        0, duration: Duration(microseconds: 200), curve: Curves.easeIn);
+    widget.pageController!.animateToPage(0,
+        duration: Duration(microseconds: 200), curve: Curves.easeIn);
   }
 
   _imgFromGallery() async {
     XFile? image =
-    await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
+        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
     setState(() {
       _image = File(image!.path);
     });
@@ -72,7 +72,7 @@ class _MyUploadPageState extends State<MyUploadPage> {
 
   _imgFromCamera() async {
     XFile? image =
-    await _picker.pickImage(source: ImageSource.camera, imageQuality: 50);
+        await _picker.pickImage(source: ImageSource.camera, imageQuality: 50);
     setState(() {
       _image = File(image!.path);
     });
@@ -117,7 +117,7 @@ class _MyUploadPageState extends State<MyUploadPage> {
                           height: MediaQuery.of(context).size.width,
                           color: Colors.grey.withOpacity(0.4),
                           child: _image == null
-                              ? Center(
+                              ? const Center(
                                   child: Icon(
                                     Icons.add_a_photo,
                                     size: 50,
@@ -146,7 +146,7 @@ class _MyUploadPageState extends State<MyUploadPage> {
                                                 _image = null;
                                               });
                                             },
-                                            icon: Icon(Icons.highlight_remove),
+                                            icon: const Icon(Icons.highlight_remove),
                                             color: Colors.white,
                                           ),
                                         ],
@@ -156,10 +156,10 @@ class _MyUploadPageState extends State<MyUploadPage> {
                                 ),
                         )),
                     Container(
-                      margin: EdgeInsets.only(left: 10, right: 10, top: 10),
+                      margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
                       child: TextField(
                         controller: captionController,
-                        style: TextStyle(color: Colors.black),
+                        style: const TextStyle(color: Colors.black),
                         keyboardType: TextInputType.multiline,
                         minLines: 1,
                         maxLines: 5,

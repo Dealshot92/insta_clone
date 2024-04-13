@@ -20,11 +20,11 @@ class _MySearchPageState extends State<MySearchPage> {
       isLoading = true;
     });
     DBService.searchMembers(keyword).then((users) => {
-      _respSearchMembers(users),
+      _resSearchMembers(users),
     });
   }
 
-  void _respSearchMembers(List<Member> members) {
+  void _resSearchMembers(List<Member> members) {
     setState(() {
       items = members;
       isLoading = false;
@@ -58,7 +58,7 @@ class _MySearchPageState extends State<MySearchPage> {
   @override
   void initState() {
     super.initState();
-    _apiSearchMembers("");
+    _apiSearchMembers('');
   }
 
   @override

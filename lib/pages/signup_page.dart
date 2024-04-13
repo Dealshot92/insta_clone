@@ -1,7 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ngdemo17/model/member_model.dart';
 import 'package:ngdemo17/pages/signin_page.dart';
+import 'package:ngdemo17/services/auth_service.dart';
+import 'package:ngdemo17/services/db_service.dart';
 
+import '../services/prefs_service.dart';
 import '../services/utils_service.dart';
+import 'home_page.dart';
 
 class SignUpPage extends StatefulWidget {
   static const String id = 'signup_page';
@@ -31,6 +37,43 @@ class _SignUpPageState extends State<SignUpPage> {
       Utils.fireToast("Password and confirm password does not match");
       return;
     }
+    setState(() {
+      isLoading = true;
+    });
+
+    AuthService.signUpUser(context, fullname, email, password)
+        .then((firebaseUser) => {
+              _getFirebaseUser(firebaseUser, Member(fullname, email)),
+            });
+  }
+
+  _getFirebaseUser(User? firebaseUser, Member member) async {
+    setState(() {
+      isLoading = false;
+    });
+    if (firebaseUser != null) {
+      //save user id locally
+      _saveMemberIdToLocal(firebaseUser);
+
+      //save member to database
+      _saveMemberToCloud(member);
+
+      _callHomePage();
+    } else {
+      Utils.fireToast('Check your information');
+    }
+  }
+
+  _saveMemberIdToLocal(User firebaseUser) async {
+    await Prefs.saveUserId(firebaseUser.uid);
+  }
+
+  _saveMemberToCloud(Member member) async {
+    await DBService.storeMember(member);
+  }
+
+  _callHomePage() {
+    Navigator.pushReplacementNamed(context, HomePage.id);
   }
 
   _callSignInPage() {
@@ -117,7 +160,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             color: Colors.white.withOpacity(0.2),
                             borderRadius: BorderRadius.circular(7)),
                         child: TextField(
-                          controller: emailController,
+                          controller: passwordController,
                           style: const TextStyle(color: Colors.white),
                           obscureText: true,
                           decoration: const InputDecoration(
@@ -138,7 +181,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             color: Colors.white.withOpacity(0.2),
                             borderRadius: BorderRadius.circular(7)),
                         child: TextField(
-                          controller: emailController,
+                          controller: cpasswordController,
                           style: const TextStyle(color: Colors.white),
                           obscureText: true,
                           decoration: const InputDecoration(

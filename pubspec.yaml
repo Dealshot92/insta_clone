@@ -18,16 +18,16 @@ dependencies:
   cupertino_icons: ^1.0.6
   fluttertoast: ^8.2.4
   image_picker: ^1.0.7
-  cached_network_image: ^3.2.2
+  cached_network_image: ^3.2.1
   eva_icons_flutter: ^3.1.0
-  firebase_core: ^2.28.0
-  firebase_auth: ^4.19.0
-  cloud_firestore: ^4.16.0
-  firebase_storage: ^11.7.0
+  firebase_core: ^2.24.2
+  firebase_auth: ^4.16.0
+  cloud_firestore: ^4.14.0
+  firebase_storage: ^11.6.0
   platform_device_id: ^1.0.1
   firebase_messaging: ^14.8.0
   flutter_local_notifications: ^17.0.0
-  shared_preferences: ^2.0.15
+  shared_preferences: ^2.2.2
   logger: ^2.2.0
 
 dev_dependencies:

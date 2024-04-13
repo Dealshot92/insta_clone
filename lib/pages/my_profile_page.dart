@@ -1,8 +1,10 @@
 import 'dart:io';
 
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:ngdemo17/pages/signin_page.dart';
 
 import '../model/member_model.dart';
 import '../model/post_model.dart';
@@ -53,11 +55,11 @@ class _MyProfilePageState extends State<MyProfilePage> {
       isLoading = true;
     });
     FileService.uploadUserImage(_image!).then((downloadUrl) => {
-      _apiUpdateUser(downloadUrl),
+      _apiUpdateMember(downloadUrl),
     });
   }
 
-  _apiUpdateUser(String downloadUrl) async {
+  _apiUpdateMember(String downloadUrl) async {
     Member member = await DBService.loadMember();
     member.img_url = downloadUrl;
     await DBService.updateMember(member);
@@ -133,9 +135,6 @@ class _MyProfilePageState extends State<MyProfilePage> {
       setState(() {
         isLoading = true;
       });
-      DBService.removePost(post).then((value) => {
-        _apiLoadPosts(),
-      });
     }
   }
 
@@ -145,8 +144,12 @@ class _MyProfilePageState extends State<MyProfilePage> {
       setState(() {
         isLoading = true;
       });
-      AuthService.signOutUser(context);
+      _signOutUser();
     }
+  }
+  _signOutUser(){
+    AuthService.signOutUser(context);
+    Navigator.pushReplacementNamed(context, SignInPage.id);
   }
 
   @override
@@ -154,6 +157,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
     super.initState();
     _apiLoadMember();
     _apiLoadPosts();
+
+
   }
 
 
@@ -175,7 +180,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
         actions: [
           IconButton(
             onPressed: () {
-              // _dialogLogout();
+              _dialogLogout();
             },
             icon: Icon(Icons.exit_to_app),
             color: Color.fromRGBO(193, 53, 132, 1),
@@ -191,7 +196,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    // _showPicker(context);
+                    _showPicker(context);
                   },
                   child: Stack(
                     children: [
@@ -206,7 +211,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                         ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(35),
-                          child: _image == null
+                          child: img_url.isEmpty
                               ? const Image(
                                   image:
                                       AssetImage('assets/images/ic_person.png'),
@@ -214,8 +219,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                   height: 70,
                                   fit: BoxFit.cover,
                                 )
-                              : Image.file(
-                                  _image!,
+                              : Image.network(
+                                  img_url,
                                   width: 70,
                                   height: 70,
                                   fit: BoxFit.cover,
@@ -225,7 +230,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                       Container(
                         width: 80,
                         height: 80,
-                        child: Column(
+                        child: const Column(
                           mainAxisAlignment: MainAxisAlignment.end,
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
@@ -241,22 +246,22 @@ class _MyProfilePageState extends State<MyProfilePage> {
                 ),
 
                 //#myinfos
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Text(
                   fullname.toUpperCase(),
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: Colors.black,
                       fontSize: 16,
                       fontWeight: FontWeight.bold),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 3,
                 ),
                 Text(
                   email,
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: Colors.black54,
                       fontSize: 14,
                       fontWeight: FontWeight.normal),
@@ -264,7 +269,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
 
                 //#mycounts
                 Container(
-                  margin: EdgeInsets.only(top: 10),
+                  margin: const EdgeInsets.only(top: 10),
                   height: 80,
                   child: Row(
                     children: [
@@ -279,7 +284,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 3,
                               ),
                               const Text(
@@ -299,7 +304,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                             children: [
                               Text(
                                 count_followers.toString(),
-                                style: TextStyle(
+                                style: const TextStyle(
                                     color: Colors.black,
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold),
@@ -391,6 +396,10 @@ class _MyProfilePageState extends State<MyProfilePage> {
               ],
             ),
           ),
+          isLoading? Center(
+            child: CircularProgressIndicator(),
+          ): SizedBox.shrink(),
+          
         ],
       ),
     );
@@ -399,7 +408,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
   Widget _itemOfPost(Post post) {
     return GestureDetector(
         onLongPress: (){
-          // _dialogRemovePost(post);
+          _dialogRemovePost(post);
         },
         child: Container(
           margin: EdgeInsets.all(5),

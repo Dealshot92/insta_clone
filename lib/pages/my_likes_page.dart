@@ -17,14 +17,14 @@ class _MyLikesPageState extends State<MyLikesPage> {
   bool isLoading = false;
   List<Post> items = [];
 
-  void _apiLoadLikes() {
-    setState(() {
-      isLoading = true;
-    });
-    DBService.loadLikes().then((value) => {
-      _resLoadPost(value),
-    });
-  }
+  // void _apiLoadLikes() {
+  //   setState(() {
+  //     isLoading = true;
+  //   });
+  //   DBService.loadLikes().then((value) => {
+  //     _resLoadPost(value),
+  //   });
+  // }
 
   void _resLoadPost(List<Post> posts) {
     setState(() {
@@ -33,33 +33,33 @@ class _MyLikesPageState extends State<MyLikesPage> {
     });
   }
 
-  void _apiPostUnlike(Post post) {
-    setState(() {
-      isLoading = true;
-      post.liked = false;
-    });
-    DBService.likePost(post, false).then((value) => {
-      _apiLoadLikes(),
-    });
-  }
+  // void _apiPostUnlike(Post post) {
+  //   setState(() {
+  //     isLoading = true;
+  //     post.liked = false;
+  //   });
+  //   DBService.likePost(post, false).then((value) => {
+  //     _apiLoadLikes(),
+  //   });
+  // }
 
-  _dialogRemovePost(Post post) async{
-    var result = await Utils.dialogCommon(context, "Insta Clone", "Do you want to detele this post?", false);
-    if(result != null && result){
-      setState(() {
-        isLoading = true;
-      });
-      DBService.removePost(post).then((value) => {
-        _apiLoadLikes(),
-      });
-    }
-  }
+  // _dialogRemovePost(Post post) async{
+  //   var result = await Utils.dialogCommon(context, "Insta Clone", "Do you want to detele this post?", false);
+  //   if(result != null && result){
+  //     setState(() {
+  //       isLoading = true;
+  //     });
+  //     DBService.removePost(post).then((value) => {
+  //       _apiLoadLikes(),
+  //     });
+  //   }
+  // }
 
-  @override
-  void initState() {
-    super.initState();
-    _apiLoadLikes();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _apiLoadLikes();
+  // }
 
   @override
   Widget build(BuildContext context) {

@@ -20,7 +20,7 @@ class FileService {
 
   static Future<String> uploadPostImage(File _image) async {
     String uid = AuthService.currentUserId();
-    String img_name = uid + "_" + DateTime.now().toString();
+    String img_name = '${uid}_${DateTime.now()}';
     var firebaseStorageRef = _storage.child(folder_post).child(img_name);
     var uploadTask = firebaseStorageRef.putFile(_image);
     final TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {});

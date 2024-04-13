@@ -9,7 +9,7 @@ import '../services/utils_service.dart';
 class MyFeedPage extends StatefulWidget {
   final PageController? pageController;
 
-  const MyFeedPage({Key? key, this.pageController}) : super(key: key);
+  const MyFeedPage({super.key, this.pageController});
 
   @override
   State<MyFeedPage> createState() => _MyFeedPageState();
@@ -35,42 +35,42 @@ class _MyFeedPageState extends State<MyFeedPage> {
     });
   }
 
-  void _apiPostLike(Post post) async {
-    setState(() {
-      isLoading = true;
-    });
+  // void _apiPostLike(Post post) async {
+  //   setState(() {
+  //     isLoading = true;
+  //   });
+  //
+  //   await DBService.likePost(post, true);
+  //   setState(() {
+  //     isLoading = false;
+  //     post.liked = true;
+  //   });
+  // }
 
-    await DBService.likePost(post, true);
-    setState(() {
-      isLoading = false;
-      post.liked = true;
-    });
-  }
+  // void _apiPostUnLike(Post post) async {
+  //   setState(() {
+  //     isLoading = true;
+  //   });
+  //
+  //   await DBService.likePost(post, false);
+  //   setState(() {
+  //     isLoading = false;
+  //     post.liked = false;
+  //   });
+  // }
 
-  void _apiPostUnLike(Post post) async {
-    setState(() {
-      isLoading = true;
-    });
-
-    await DBService.likePost(post, false);
-    setState(() {
-      isLoading = false;
-      post.liked = false;
-    });
-  }
-
-  _dialogRemovePost(Post post) async {
-    var result = await Utils.dialogCommon(
-        context, "Insta Clone", "Do you want to remove this post?", false);
-    if (result != null && result) {
-      setState(() {
-        isLoading = true;
-      });
-      DBService.removePost(post).then((value) => {
-        _apiLoadFeeds(),
-      });
-    }
-  }
+  // _dialogRemovePost(Post post) async {
+  //   var result = await Utils.dialogCommon(
+  //       context, "Insta Clone", "Do you want to remove this post?", false);
+  //   if (result != null && result) {
+  //     setState(() {
+  //       isLoading = true;
+  //     });
+  //     DBService.removePost(post).then((value) => {
+  //       _apiLoadFeeds(),
+  //     });
+  //   }
+  // }
 
   @override
   void initState() {
