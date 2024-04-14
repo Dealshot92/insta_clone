@@ -110,7 +110,7 @@ class _MySearchPageState extends State<MySearchPage> {
                   child: ListView.builder(
                     itemCount: items.length,
                     itemBuilder: (ctx, index){
-                      // return _itemOfMember(items[index]);
+                      return _itemOfMember(items[index]);
                     },
                   ),
                 ),
@@ -180,9 +180,9 @@ class _MySearchPageState extends State<MySearchPage> {
                 GestureDetector(
                   onTap: () {
                     if (member.followed) {
-                      // _apiUnFollowMember(member);
+                      _apiUnFollowMember(member);
                     } else {
-                      // _apiFollowMember(member);
+                      _apiFollowMember(member);
                     }
                   },
                   child: Container(

@@ -1,10 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-
 import '../model/post_model.dart';
 import '../services/db_service.dart';
-import '../services/utils_service.dart';
 
 class MyFeedPage extends StatefulWidget {
   final PageController? pageController;
@@ -17,15 +14,39 @@ class MyFeedPage extends StatefulWidget {
 
 class _MyFeedPageState extends State<MyFeedPage> {
   bool isLoading = false;
-  List<Post> items=[];
+  List<Post> items = [];
+
+  void _apiPostLike(Post post) async {
+    setState(() {
+      isLoading = true;
+    });
+
+    //await DBService.likePost(post, true);
+    setState(() {
+      isLoading = false;
+      post.liked = true;
+    });
+  }
+
+  void _apiPostUnLike(Post post) async {
+    setState(() {
+      isLoading = true;
+    });
+
+    //await DBService.likePost(post, false);
+    setState(() {
+      isLoading = false;
+      post.liked = false;
+    });
+  }
 
   _apiLoadFeeds() {
     setState(() {
       isLoading = true;
     });
     DBService.loadFeeds().then((value) => {
-      _resLoadFeeds(value),
-    });
+          _resLoadFeeds(value),
+        });
   }
 
   _resLoadFeeds(List<Post> posts) {
@@ -35,50 +56,11 @@ class _MyFeedPageState extends State<MyFeedPage> {
     });
   }
 
-  // void _apiPostLike(Post post) async {
-  //   setState(() {
-  //     isLoading = true;
-  //   });
-  //
-  //   await DBService.likePost(post, true);
-  //   setState(() {
-  //     isLoading = false;
-  //     post.liked = true;
-  //   });
-  // }
-
-  // void _apiPostUnLike(Post post) async {
-  //   setState(() {
-  //     isLoading = true;
-  //   });
-  //
-  //   await DBService.likePost(post, false);
-  //   setState(() {
-  //     isLoading = false;
-  //     post.liked = false;
-  //   });
-  // }
-
-  // _dialogRemovePost(Post post) async {
-  //   var result = await Utils.dialogCommon(
-  //       context, "Insta Clone", "Do you want to remove this post?", false);
-  //   if (result != null && result) {
-  //     setState(() {
-  //       isLoading = true;
-  //     });
-  //     DBService.removePost(post).then((value) => {
-  //       _apiLoadFeeds(),
-  //     });
-  //   }
-  // }
-
   @override
   void initState() {
     super.initState();
     _apiLoadFeeds();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -88,40 +70,34 @@ class _MyFeedPageState extends State<MyFeedPage> {
         backgroundColor: Colors.white,
         elevation: 0,
         title: const Text(
-          'Instagram',
+          "Instagram",
           style: TextStyle(
-            color: Colors.black,
-            fontFamily: 'Billabong',
-            fontSize: 30,
-          ),
+              color: Colors.black, fontFamily: 'Billabong', fontSize: 30),
         ),
         actions: [
           IconButton(
             onPressed: () {
-              widget.pageController!.animateToPage(
-                2,
-                duration: Duration(microseconds: 200),
-                curve: Curves.easeIn,
-              );
+              widget.pageController!.animateToPage(2,
+                  duration: Duration(microseconds: 200), curve: Curves.easeIn);
             },
-            icon: const Icon(Icons.camera_alt),
-            color: const Color.fromRGBO(193, 53, 132, 1),
+            icon: Icon(Icons.camera_alt),
+            color: Color.fromRGBO(193, 53, 132, 1),
           ),
         ],
       ),
       body: Stack(
         children: [
           ListView.builder(
-            // itemCount: items.length,
+            itemCount: items.length,
             itemBuilder: (ctx, index) {
               return _itemOfPost(items[index]);
             },
           ),
           isLoading
-              ? Center(
+              ? const Center(
                   child: CircularProgressIndicator(),
                 )
-              : SizedBox.shrink(),
+              : const SizedBox.shrink(),
         ],
       ),
     );
@@ -132,7 +108,7 @@ class _MyFeedPageState extends State<MyFeedPage> {
       color: Colors.white,
       child: Column(
         children: [
-          Divider(),
+          const Divider(),
           //#user info
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -145,7 +121,7 @@ class _MyFeedPageState extends State<MyFeedPage> {
                       borderRadius: BorderRadius.circular(40),
                       child: post.img_user.isEmpty
                           ? const Image(
-                              image: AssetImage('assets/images/ic_person.png'),
+                              image: AssetImage("assets/images/ic_person.png"),
                               width: 40,
                               height: 40,
                               fit: BoxFit.cover,
@@ -157,7 +133,7 @@ class _MyFeedPageState extends State<MyFeedPage> {
                               fit: BoxFit.cover,
                             ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Column(
@@ -166,18 +142,14 @@ class _MyFeedPageState extends State<MyFeedPage> {
                         Text(
                           post.fullname,
                           style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
+                              fontWeight: FontWeight.bold, color: Colors.black),
                         ),
                         const SizedBox(
                           height: 3,
                         ),
                         Text(
                           post.date,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.normal,
-                          ),
+                          style: const TextStyle(fontWeight: FontWeight.normal),
                         ),
                       ],
                     ),
@@ -185,31 +157,28 @@ class _MyFeedPageState extends State<MyFeedPage> {
                 ),
                 post.mine
                     ? IconButton(
-                        icon: Icon(Icons.more_horiz),
-                        onPressed: () {
-                          // _dialogRemovePost(post);
-                        },
+                        icon: const Icon(Icons.more_horiz),
+                        onPressed: () {},
                       )
-                    : SizedBox.shrink(),
+                    : const SizedBox.shrink(),
               ],
             ),
           ),
-
           //#post image
-          SizedBox(
+          const SizedBox(
             height: 8,
           ),
           CachedNetworkImage(
             width: MediaQuery.of(context).size.width,
             imageUrl: post.img_post,
-            placeholder: (context, url) => Center(
+            placeholder: (context, url) => const Center(
               child: CircularProgressIndicator(),
             ),
-            errorWidget: (context, url, error) => Icon(Icons.error),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
             fit: BoxFit.cover,
           ),
 
-          //# like n share
+          //#like share
           Row(
             children: [
               Row(
@@ -217,27 +186,27 @@ class _MyFeedPageState extends State<MyFeedPage> {
                   IconButton(
                     onPressed: () {
                       if (!post.liked) {
-                        // _apiPostLike(post);
+                        _apiPostLike(post);
                       } else {
-                        // _apiPostUnlike(post);
+                        _apiPostUnLike(post);
                       }
                     },
                     icon: post.liked
                         ? const Icon(
-                            EvaIcons.heart,
+                            Icons.favorite,
                             color: Colors.red,
                           )
                         : const Icon(
-                            EvaIcons.heartOutline,
+                            Icons.favorite_border,
                             color: Colors.black,
                           ),
                   ),
                   IconButton(
                     onPressed: () {},
-                    icon: Icon(
-                      EvaIcons.shareOutline,
+                    icon: const Icon(
+                      Icons.share,
                     ),
-                  )
+                  ),
                 ],
               )
             ],
@@ -246,14 +215,13 @@ class _MyFeedPageState extends State<MyFeedPage> {
           //#caption
           Container(
             width: MediaQuery.of(context).size.width,
-            margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+            margin: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
             child: RichText(
               softWrap: true,
               overflow: TextOverflow.visible,
               text: TextSpan(
-                text: '${post.caption}',
-                style: TextStyle(color: Colors.black),
-              ),
+                  text: post.caption,
+                  style: const TextStyle(color: Colors.black)),
             ),
           ),
         ],

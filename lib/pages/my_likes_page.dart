@@ -7,7 +7,7 @@ import '../services/db_service.dart';
 import '../services/utils_service.dart';
 
 class MyLikesPage extends StatefulWidget {
-  const MyLikesPage({Key? key}) : super(key: key);
+  const MyLikesPage({super.key});
 
   @override
   State<MyLikesPage> createState() => _MyLikesPageState();
@@ -17,14 +17,14 @@ class _MyLikesPageState extends State<MyLikesPage> {
   bool isLoading = false;
   List<Post> items = [];
 
-  // void _apiLoadLikes() {
-  //   setState(() {
-  //     isLoading = true;
-  //   });
-  //   DBService.loadLikes().then((value) => {
-  //     _resLoadPost(value),
-  //   });
-  // }
+  void _apiLoadLikes() {
+    setState(() {
+      isLoading = true;
+    });
+    // DBService.loadLikes().then((value) => {
+    //   _resLoadPost(value),
+    // });
+  }
 
   void _resLoadPost(List<Post> posts) {
     setState(() {
@@ -33,33 +33,33 @@ class _MyLikesPageState extends State<MyLikesPage> {
     });
   }
 
-  // void _apiPostUnlike(Post post) {
-  //   setState(() {
-  //     isLoading = true;
-  //     post.liked = false;
-  //   });
-  //   DBService.likePost(post, false).then((value) => {
-  //     _apiLoadLikes(),
-  //   });
-  // }
+  void _apiPostUnlike(Post post) {
+    setState(() {
+      isLoading = true;
+      post.liked = false;
+    });
+    // DBService.likePost(post, false).then((value) => {
+    //   _apiLoadLikes(),
+    // });
+  }
 
-  // _dialogRemovePost(Post post) async{
-  //   var result = await Utils.dialogCommon(context, "Insta Clone", "Do you want to detele this post?", false);
-  //   if(result != null && result){
-  //     setState(() {
-  //       isLoading = true;
-  //     });
-  //     DBService.removePost(post).then((value) => {
-  //       _apiLoadLikes(),
-  //     });
-  //   }
-  // }
+  _dialogRemovePost(Post post) async{
+    var result = await Utils.dialogCommon(context, "Insta Clone", "Do you want to detele this post?", false);
+    if(result != null && result){
+      setState(() {
+        isLoading = true;
+      });
+      // DBService.removePost(post).then((value) => {
+      //   _apiLoadLikes(),
+      // });
+    }
+  }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _apiLoadLikes();
-  // }
+  @override
+  void initState() {
+    super.initState();
+    _apiLoadLikes();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +112,7 @@ class _MyLikesPageState extends State<MyLikesPage> {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(40),
                       child: post.img_user.isEmpty
-                          ? Image(
+                          ? const Image(
                               image: AssetImage("assets/images/ic_person.png"),
                               width: 40,
                               height: 40,
@@ -124,7 +124,7 @@ class _MyLikesPageState extends State<MyLikesPage> {
                               fit: BoxFit.cover,
                             ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Column(
@@ -132,10 +132,10 @@ class _MyLikesPageState extends State<MyLikesPage> {
                       children: [
                         Text(
                           post.fullname,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.black),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 3,
                         ),
                         Text(
@@ -148,7 +148,7 @@ class _MyLikesPageState extends State<MyLikesPage> {
                 ),
                 post.mine
                     ? IconButton(
-                        icon: Icon(Icons.more_horiz),
+                        icon: const Icon(Icons.more_horiz),
                         onPressed: () {
                           // _dialogRemovePost(post);
                         },
@@ -181,11 +181,11 @@ class _MyLikesPageState extends State<MyLikesPage> {
                       // _apiPostUnlike(post);
                     },
                     icon: post.liked
-                        ? Icon(
+                        ? const Icon(
                             EvaIcons.heart,
                             color: Colors.red,
                           )
-                        : Icon(
+                        : const Icon(
                             EvaIcons.heartOutline,
                             color: Colors.black,
                           ),
@@ -204,7 +204,7 @@ class _MyLikesPageState extends State<MyLikesPage> {
           //#caption
           Container(
             width: MediaQuery.of(context).size.width,
-            margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+            margin: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
             child: RichText(
               softWrap: true,
               overflow: TextOverflow.visible,

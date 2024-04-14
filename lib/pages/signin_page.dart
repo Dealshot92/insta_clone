@@ -114,7 +114,7 @@ class _SignInPageState extends State<SignInPage> {
                               color: Colors.white.withOpacity(0.2),
                               borderRadius: BorderRadius.circular(7)),
                           child: TextField(
-                            controller: emailController,
+                            controller: passwordController,
                             style: const TextStyle(color: Colors.white),
                             obscureText: true,
                             decoration: const InputDecoration(

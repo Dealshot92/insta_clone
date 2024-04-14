@@ -60,6 +60,7 @@ class _SplashPageState extends State<SplashPage> {
                   style: TextStyle(
                     color: Colors.white,
                     fontFamily: 'Billabong',
+                    fontSize: 45,
                   ),
                 ),
               ),

@@ -59,7 +59,7 @@ class _MyUploadPageState extends State<MyUploadPage> {
     captionController.text = "";
     _image = null;
     widget.pageController!.animateToPage(0,
-        duration: Duration(microseconds: 200), curve: Curves.easeIn);
+        duration: const Duration(microseconds: 200), curve: Curves.easeIn);
   }
 
   _imgFromGallery() async {
@@ -76,6 +76,36 @@ class _MyUploadPageState extends State<MyUploadPage> {
     setState(() {
       _image = File(image!.path);
     });
+  }
+
+  void _showPicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return SafeArea(
+            child: Wrap(
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.photo_library),
+                  title: const Text('Pick Photo'),
+                  onTap: (){
+                    _imgFromGallery();
+                    Navigator.of(context).pop();
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.photo_camera),
+                  title: const Text('Take Photo'),
+                  onTap: (){
+                    _imgFromCamera();
+                    Navigator.of(context).pop();
+                  },
+                ),
+
+              ],
+            ),
+          );
+        });
   }
 
   @override
@@ -110,7 +140,7 @@ class _MyUploadPageState extends State<MyUploadPage> {
                   children: [
                     GestureDetector(
                         onTap: () {
-                          // _showPicker(context);
+                          _showPicker(context);
                         },
                         child: Container(
                           width: double.infinity,
@@ -146,7 +176,8 @@ class _MyUploadPageState extends State<MyUploadPage> {
                                                 _image = null;
                                               });
                                             },
-                                            icon: const Icon(Icons.highlight_remove),
+                                            icon: const Icon(
+                                                Icons.highlight_remove),
                                             color: Colors.white,
                                           ),
                                         ],
@@ -156,7 +187,8 @@ class _MyUploadPageState extends State<MyUploadPage> {
                                 ),
                         )),
                     Container(
-                      margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
+                      margin:
+                          const EdgeInsets.only(left: 10, right: 10, top: 10),
                       child: TextField(
                         controller: captionController,
                         style: const TextStyle(color: Colors.black),
