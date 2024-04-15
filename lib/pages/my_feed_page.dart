@@ -21,7 +21,7 @@ class _MyFeedPageState extends State<MyFeedPage> {
       isLoading = true;
     });
 
-    //await DBService.likePost(post, true);
+    await DBService.likePost(post, true);
     setState(() {
       isLoading = false;
       post.liked = true;
@@ -33,7 +33,7 @@ class _MyFeedPageState extends State<MyFeedPage> {
       isLoading = true;
     });
 
-    //await DBService.likePost(post, false);
+    await DBService.likePost(post, false);
     setState(() {
       isLoading = false;
       post.liked = false;

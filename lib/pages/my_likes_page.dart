@@ -21,9 +21,9 @@ class _MyLikesPageState extends State<MyLikesPage> {
     setState(() {
       isLoading = true;
     });
-    // DBService.loadLikes().then((value) => {
-    //   _resLoadPost(value),
-    // });
+    DBService.loadLikes().then((value) => {
+      _resLoadPost(value),
+    });
   }
 
   void _resLoadPost(List<Post> posts) {
@@ -33,14 +33,12 @@ class _MyLikesPageState extends State<MyLikesPage> {
     });
   }
 
-  void _apiPostUnlike(Post post) {
+  void _apiPostUnlike(Post post) async{
     setState(() {
       isLoading = true;
-      post.liked = false;
     });
-    // DBService.likePost(post, false).then((value) => {
-    //   _apiLoadLikes(),
-    // });
+    await DBService.likePost(post, false);
+    _apiLoadLikes();
   }
 
   _dialogRemovePost(Post post) async{
@@ -178,7 +176,7 @@ class _MyLikesPageState extends State<MyLikesPage> {
                 children: [
                   IconButton(
                     onPressed: () {
-                      // _apiPostUnlike(post);
+                      _apiPostUnlike(post);
                     },
                     icon: post.liked
                         ? const Icon(

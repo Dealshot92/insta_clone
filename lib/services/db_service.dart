@@ -6,6 +6,7 @@ import 'package:ngdemo17/services/utils_service.dart';
 import '../model/member_model.dart';
 import '../model/post_model.dart';
 import 'auth_service.dart';
+import 'log_service.dart';
 
 class DBService {
   static final _firestore = FirebaseFirestore.instance;
@@ -20,8 +21,15 @@ class DBService {
   /*
   * Member Related
   * */
-  static Future storeMember(Member member) async{
-    member.uid=AuthService.currentUserId();
+  static Future storeMember(Member member) async {
+    member.uid = AuthService.currentUserId();
+
+    Map<String, String> params = await Utils.deviceParams();
+    LogService.i(params.toString());
+
+    member.device_id = params["device_id"]!;
+    member.device_type = params["device_type"]!;
+    member.device_token = params["device_token"]!;
 
     return _firestore
         .collection(folder_users)
@@ -237,5 +245,44 @@ class DBService {
         .delete();
   }
 
+  static Future likePost(Post post, bool liked) async {
+    String uid = AuthService.currentUserId();
+    post.liked = liked;
+
+    await _firestore
+        .collection(folder_users)
+        .doc(uid)
+        .collection(folder_feeds)
+        .doc(post.id)
+        .set(post.toJson());
+
+    if (uid == post.uid) {
+      await _firestore
+          .collection(folder_users)
+          .doc(uid)
+          .collection(folder_posts)
+          .doc(post.id)
+          .set(post.toJson());
+    }
+  }
+
+  static Future<List<Post>> loadLikes() async {
+    String uid = AuthService.currentUserId();
+    List<Post> posts = [];
+
+    var querySnapshot = await _firestore
+        .collection(folder_users)
+        .doc(uid)
+        .collection(folder_feeds)
+        .where("liked", isEqualTo: true)
+        .get();
+
+    for (var result in querySnapshot.docs) {
+      Post post = Post.fromJson(result.data());
+      if (post.uid == uid) post.mine = true;
+      posts.add(post);
+    }
+    return posts;
+  }
 
 }
