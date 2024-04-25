@@ -8,7 +8,6 @@ import 'package:ngdemo17/services/prefs_service.dart';
 import 'package:platform_device_id_v3/platform_device_id.dart';
 
 class Utils {
-
   // static Future<void> showLocalNotification(String title, String body) async {
   //   var android = const AndroidNotificationDetails("channelId", "channelName",
   //       channelDescription: "channelDescription");
@@ -30,16 +29,6 @@ class Utils {
         fontSize: 16.0);
   }
 
-
-  //
-  // static String currentDate() {
-  //   DateTime now = DateTime.now();
-  //
-  //   String convertedDateTime =
-  //       "${now.year.toString()}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')} ${now.hour.toString()}:${now.minute.toString()}";
-  //   return convertedDateTime;
-  // }
-
   static Future<bool> dialogCommon(
       BuildContext context, String title, String message, bool isSingle) async {
     return await showDialog(
@@ -51,11 +40,11 @@ class Utils {
             actions: [
               !isSingle
                   ? MaterialButton(
-                onPressed: () {
-                  Navigator.of(context).pop(false);
-                },
-                child: Text("Cancel"),
-              )
+                      onPressed: () {
+                        Navigator.of(context).pop(false);
+                      },
+                      child: Text("Cancel"),
+                    )
                   : SizedBox.shrink(),
               MaterialButton(
                 onPressed: () {
@@ -67,6 +56,7 @@ class Utils {
           );
         });
   }
+
   static String currentDate() {
     DateTime now = DateTime.now();
 
@@ -74,6 +64,7 @@ class Utils {
         "${now.year.toString()}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')} ${now.hour.toString()}:${now.minute.toString()}";
     return convertedDateTime;
   }
+
   static Future<Map<String, String>> deviceParams() async {
     Map<String, String> params = {};
     var getDeviceId = await PlatformDeviceId.getDeviceId;
@@ -94,5 +85,4 @@ class Utils {
     }
     return params;
   }
-
 }

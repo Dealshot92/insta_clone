@@ -43,13 +43,13 @@ class _MyLikesPageState extends State<MyLikesPage> {
 
   _dialogRemovePost(Post post) async{
     var result = await Utils.dialogCommon(context, "Insta Clone", "Do you want to detele this post?", false);
-    if(result != null && result){
+    if(result){
       setState(() {
         isLoading = true;
       });
-      // DBService.removePost(post).then((value) => {
-      //   _apiLoadLikes(),
-      // });
+      DBService.removePost(post).then((value) => {
+        _apiLoadLikes(),
+      });
     }
   }
 
@@ -148,10 +148,10 @@ class _MyLikesPageState extends State<MyLikesPage> {
                     ? IconButton(
                         icon: const Icon(Icons.more_horiz),
                         onPressed: () {
-                          // _dialogRemovePost(post);
+                          _dialogRemovePost(post);
                         },
                       )
-                    : SizedBox.shrink(),
+                    : const SizedBox.shrink(),
               ],
             ),
           ),
@@ -165,7 +165,7 @@ class _MyLikesPageState extends State<MyLikesPage> {
             placeholder: (context, url) => const Center(
               child: CircularProgressIndicator(),
             ),
-            errorWidget: (context, url, error) => Icon(Icons.error),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
             fit: BoxFit.cover,
           ),
 

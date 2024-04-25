@@ -6,10 +6,12 @@ import 'package:ngdemo17/pages/my_likes_page.dart';
 import 'package:ngdemo17/pages/signin_page.dart';
 import 'package:ngdemo17/pages/signup_page.dart';
 import 'package:ngdemo17/pages/splash_page.dart';
+import 'package:ngdemo17/services/notif_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await NotifService().init();
 
   runApp(const MyApp());
 }

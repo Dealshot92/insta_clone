@@ -6,6 +6,7 @@ import 'package:ngdemo17/pages/signin_page.dart';
 import 'package:ngdemo17/services/auth_service.dart';
 
 import '../services/log_service.dart';
+import '../services/notif_service.dart';
 import '../services/prefs_service.dart';
 import 'home_page.dart';
 
@@ -64,9 +65,10 @@ class _SplashPageState extends State<SplashPage> {
       LogService.i(title);
       LogService.i(body);
       LogService.i(message.data.toString());
-      //
+      NotifService().showLocalNotification(title,body);
     });
   }
+
 
   @override
   void initState() {

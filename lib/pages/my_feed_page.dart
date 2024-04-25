@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../model/post_model.dart';
 import '../services/db_service.dart';
+import '../services/utils_service.dart';
 
 class MyFeedPage extends StatefulWidget {
   final PageController? pageController;
@@ -56,6 +57,19 @@ class _MyFeedPageState extends State<MyFeedPage> {
     });
   }
 
+  _dialogRemovePost(Post post) async {
+    var result = await Utils.dialogCommon(context, "Instagram", "Do you want to detele this post?", false);
+
+    if (result) {
+      setState(() {
+        isLoading = true;
+      });
+      DBService.removePost(post).then((value) => {
+        _apiLoadFeeds(),
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -78,10 +92,10 @@ class _MyFeedPageState extends State<MyFeedPage> {
           IconButton(
             onPressed: () {
               widget.pageController!.animateToPage(2,
-                  duration: Duration(microseconds: 200), curve: Curves.easeIn);
+                  duration: const Duration(microseconds: 200), curve: Curves.easeIn);
             },
-            icon: Icon(Icons.camera_alt),
-            color: Color.fromRGBO(193, 53, 132, 1),
+            icon: const Icon(Icons.camera_alt),
+            color: const Color.fromRGBO(193, 53, 132, 1),
           ),
         ],
       ),
@@ -158,7 +172,9 @@ class _MyFeedPageState extends State<MyFeedPage> {
                 post.mine
                     ? IconButton(
                         icon: const Icon(Icons.more_horiz),
-                        onPressed: () {},
+                        onPressed: () {
+                          _dialogRemovePost;
+                        },
                       )
                     : const SizedBox.shrink(),
               ],

@@ -285,4 +285,16 @@ class DBService {
     return posts;
   }
 
+  static Future removePost(Post post) async {
+    String uid = AuthService.currentUserId();
+    await removeFeed(post);
+    return await _firestore
+        .collection(folder_users)
+        .doc(uid)
+        .collection(folder_posts)
+        .doc(post.id)
+        .delete();
+  }
+
+
 }

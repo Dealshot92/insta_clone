@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../model/member_model.dart';
 import '../services/db_service.dart';
+import '../services/http_service.dart';
 
 class MySearchPage extends StatefulWidget {
   const MySearchPage({super.key});
@@ -41,6 +42,12 @@ class _MySearchPageState extends State<MySearchPage> {
       isLoading = false;
     });
     DBService.storePostsToMyFeed(someone);
+    sendNotificationToFollowedMember(someone);
+  }
+
+  void sendNotificationToFollowedMember(Member someone) async{
+    Member me=await DBService.loadMember();
+    await Network.POST(Network.API_SEND_NOTIF, Network.paramsNotify(me, someone));
   }
 
   void _apiUnFollowMember(Member someone) async {

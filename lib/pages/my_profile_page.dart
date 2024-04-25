@@ -124,16 +124,21 @@ class _MyProfilePageState extends State<MyProfilePage> {
 
   _resLoadPosts(List<Post> posts) {
     setState(() {
+      isLoading=false;
       items = posts;
       count_posts = posts.length;
     });
   }
 
-  _dialogRemovePost(Post post) async{
-    var result = await Utils.dialogCommon(context, "Insta Clone", "Do you want to detele this post?", false);
-    if(result != null && result){
+  _dialogRemovePost(Post post) async {
+    var result = await Utils.dialogCommon(context, "Instagram", "Do you want to detele this post?", false);
+
+    if (result) {
       setState(() {
         isLoading = true;
+      });
+      DBService.removePost(post).then((value) => {
+        _apiLoadPosts(),
       });
     }
   }
